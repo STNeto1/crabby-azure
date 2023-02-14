@@ -6,9 +6,16 @@ async fn main() {
 
     let client = crabby_azure::create_azure_client();
 
-    let received_message = client.receive_and_delete_message().await.unwrap();
-
-    let payload = crabby_azure::Payload::from_string(&received_message).unwrap();
-
-    println!("{:?}", payload);
+    loop {
+        match client.receive_and_delete_message().await {
+            Ok(msg) => {
+                if let Ok(payload) = crabby_azure::Payload::from_string(&msg) {
+                    println!("received => {:?}", payload);
+                } else {
+                    println!("failed to decode payload => '{}'", msg);
+                }
+            }
+            Err(e) => println!("error => {}", e),
+        }
+    }
 }

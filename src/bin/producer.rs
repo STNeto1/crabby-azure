@@ -5,7 +5,7 @@ async fn main() {
     dotenv().ok().expect("failed to load .env");
 
     let payload = crabby_azure::Payload {
-        message: "my first message".to_string(),
+        message: "some message".to_string(),
     };
     let serialized = payload.to_string().unwrap(); // should handle better
 
