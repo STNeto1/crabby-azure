@@ -2,7 +2,7 @@ use anyhow::anyhow;
 use azure_messaging_servicebus::service_bus::QueueClient;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Payload {
     pub message: String,
 }
@@ -12,6 +12,13 @@ impl Payload {
         let rst = serde_json::to_string(&self).map_err(|e| anyhow!("{}", e))?;
 
         return Ok(rst);
+    }
+
+    pub fn from_string(raw_data: &String) -> Result<Self, anyhow::Error> {
+        let payload: Payload =
+            serde_json::from_str(&raw_data.to_string()).map_err(|e| anyhow!("{}", e))?;
+
+        return Ok(payload);
     }
 }
 

@@ -12,7 +12,4 @@ async fn main() {
     let client = crabby_azure::create_azure_client();
 
     client.send_message(&serialized.as_str()).await.unwrap();
-
-    // let received_message = client.receive_and_delete_message().await?;
-    // println!("Received Message: {}", received_message);
 }
